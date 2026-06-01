@@ -12,7 +12,7 @@
 			<p class="text-xs font-semibold tracking-wide text-primary uppercase">Communities</p>
 			<h1 class="text-3xl font-bold tracking-tight mt-1">Your memberships and follows</h1>
 		</div>
-		<Button>Discover more</Button>
+		<Button href="/communities/discover">Discover more</Button>
 	</div>
 
 	<!-- Community List -->
@@ -53,7 +53,7 @@
 						</div>
 					</div>
 					<div class="mt-6 w-full flex justify-end">
-						<Button>Open workspace</Button>
+						<Button href="/communities/design-circle">Open workspace</Button>
 					</div>
 				</div>
 			</CardContent>
@@ -84,7 +84,7 @@
 						</div>
 					</div>
 					<div class="mt-4 w-full flex justify-end">
-						<Button variant="outline">View workspace</Button>
+						<Button variant="outline" href="/communities/campus-volunteers">View workspace</Button>
 					</div>
 				</div>
 			</CardContent>
@@ -109,7 +109,7 @@
 						</div>
 					</div>
 					<div class="mt-4 w-full flex justify-end">
-						<Button variant="outline">Public page</Button>
+						<Button variant="outline" href="/communities/indie-film-club">Public page</Button>
 					</div>
 				</div>
 			</CardContent>

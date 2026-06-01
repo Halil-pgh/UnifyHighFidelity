@@ -4,6 +4,7 @@
 	import Share3Icon from "@tabler/icons-svelte/icons/share-3";
 	import TrashIcon from "@tabler/icons-svelte/icons/trash";
 	import type { Icon } from "@tabler/icons-svelte";
+	import { goto } from "$app/navigation";
 
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
@@ -40,22 +41,22 @@
 						{/snippet}
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content
-							class="w-32 rounded-lg"
-							side={sidebar.isMobile ? "bottom" : "right"}
-							align={sidebar.isMobile ? "end" : "start"}
-						>
-							<DropdownMenu.Item>
-								<FolderIcon />
-								<span>View Details</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item>
-								<Share3Icon />
-								<span>Share</span>
-							</DropdownMenu.Item>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item variant="destructive">
-								<TrashIcon />
-								<span>Leave</span>
+						class="w-32 rounded-lg"
+						side={sidebar.isMobile ? "bottom" : "right"}
+						align={sidebar.isMobile ? "end" : "start"}
+					>
+						<DropdownMenu.Item onclick={() => goto(item.url)}>
+							<FolderIcon />
+							<span>View Details</span>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item onclick={() => goto(`${item.url}?action=share`)}>
+							<Share3Icon />
+							<span>Share</span>
+						</DropdownMenu.Item>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item variant="destructive" onclick={() => goto(`${item.url}?action=leave`)}>
+							<TrashIcon />
+							<span>Leave</span>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
@@ -63,8 +64,12 @@
 		{/each}
 		<Sidebar.MenuItem>
 			<Sidebar.MenuButton class="text-sidebar-foreground/70">
-				<DotsIcon class="text-sidebar-foreground/70" />
-				<span>More</span>
+				{#snippet child({ props })}
+					<a href="/communities" {...props}>
+						<DotsIcon class="text-sidebar-foreground/70" />
+						<span>More</span>
+					</a>
+				{/snippet}
 			</Sidebar.MenuButton>
 		</Sidebar.MenuItem>
 	</Sidebar.Menu>

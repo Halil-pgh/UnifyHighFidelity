@@ -21,16 +21,28 @@
 			</p>
 			
 			<div class="flex flex-col sm:flex-row gap-4 mt-4 justify-center lg:justify-start">
-				<Button size="lg" class="rounded-full px-8 text-base">Start with Unify</Button>
-				<Button variant="outline" size="lg" class="rounded-full px-8 text-base">Explore public events</Button>
+				<Button size="lg" class="rounded-full px-8 text-base" href="/home">Start with Unify</Button>
+				<Button variant="outline" size="lg" class="rounded-full px-8 text-base" href="/explore">
+					Explore public events
+				</Button>
 			</div>
-			
+
 			<div class="flex flex-wrap gap-4 mt-8 justify-center lg:justify-start">
-				<Button variant="secondary" size="lg" class="h-14 rounded-xl flex flex-col items-start px-6 gap-0">
+				<Button
+					variant="secondary"
+					size="lg"
+					class="h-14 rounded-xl flex flex-col items-start px-6 gap-0"
+					href="/download/ios"
+				>
 					<span class="text-[10px] text-muted-foreground leading-none">Download on</span>
 					<strong class="text-sm leading-tight">App Store</strong>
 				</Button>
-				<Button variant="secondary" size="lg" class="h-14 rounded-xl flex flex-col items-start px-6 gap-0">
+				<Button
+					variant="secondary"
+					size="lg"
+					class="h-14 rounded-xl flex flex-col items-start px-6 gap-0"
+					href="/download/android"
+				>
 					<span class="text-[10px] text-muted-foreground leading-none">Get it on</span>
 					<strong class="text-sm leading-tight">Google Play</strong>
 				</Button>

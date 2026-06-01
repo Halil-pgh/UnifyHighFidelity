@@ -2,6 +2,10 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
+	import { calendarDayItems } from '$lib/data/mock-data';
+	import { cn } from '$lib/utils';
+
+	let view = $state<'week' | 'month'>('week');
 </script>
 
 <div class="flex flex-col gap-8 max-w-6xl mx-auto py-4">
@@ -12,8 +16,22 @@
 			<h1 class="text-3xl font-bold tracking-tight mt-1">Tasks and joined events</h1>
 		</div>
 		<div class="flex gap-2">
-			<Button variant="default" size="sm" class="rounded-full">Week</Button>
-			<Button variant="outline" size="sm" class="rounded-full bg-background/50 backdrop-blur">Month</Button>
+			<Button
+				variant={view === 'week' ? 'default' : 'outline'}
+				size="sm"
+				class="rounded-full"
+				onclick={() => (view = 'week')}
+			>
+				Week
+			</Button>
+			<Button
+				variant={view === 'month' ? 'default' : 'outline'}
+				size="sm"
+				class="rounded-full bg-background/50 backdrop-blur"
+				onclick={() => (view = 'month')}
+			>
+				Month
+			</Button>
 		</div>
 	</div>
 
@@ -63,20 +81,19 @@
 				<h2 class="text-xl font-bold mb-6">Wednesday, May 22</h2>
 				
 				<div class="flex flex-col gap-4">
-					<button class="flex items-start gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left border border-transparent hover:border-border">
-						<div class="mt-1 w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></div>
-						<div>
-							<h4 class="font-medium">Portfolio Crit Night</h4>
-							<p class="text-xs text-muted-foreground mt-1">18:30 · Design Circle</p>
-						</div>
-					</button>
-					<button class="flex items-start gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left border border-transparent hover:border-border">
-						<div class="mt-1 w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></div>
-						<div>
-							<h4 class="font-medium">Review registration copy</h4>
-							<p class="text-xs text-muted-foreground mt-1">Due today</p>
-						</div>
-					</button>
+					{#each calendarDayItems as item (item.id)}
+						<Button
+							variant="ghost"
+							class="h-auto w-full justify-start gap-4 p-3 text-left hover:bg-muted/50"
+							href={item.href}
+						>
+							<div class={cn('mt-1 w-2.5 h-2.5 rounded-full shrink-0', item.dotClass)}></div>
+							<div>
+								<h4 class="font-medium">{item.title}</h4>
+								<p class="text-xs text-muted-foreground mt-1">{item.subtitle}</p>
+							</div>
+						</Button>
+					{/each}
 				</div>
 			</CardContent>
 		</Card>

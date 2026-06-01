@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { Card, CardContent } from '$lib/components/ui/card';
+	import { Card } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
+	import { filterTasks, mockTasks, taskFilters } from '$lib/data/mock-data';
+	import { cn } from '$lib/utils';
+	import type { TaskFilterId } from '$lib/types';
+
+	let activeFilter = $state<TaskFilterId>('all');
+	let filteredTasks = $derived(filterTasks(mockTasks, activeFilter));
 </script>
 
 <div class="flex flex-col gap-8 max-w-6xl mx-auto py-4">
@@ -12,10 +18,16 @@
 			<h1 class="text-3xl font-bold tracking-tight mt-1">All assigned work across communities</h1>
 		</div>
 		<div class="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 hide-scrollbar">
-			<Button variant="default" size="sm" class="rounded-full shrink-0">All</Button>
-			<Button variant="outline" size="sm" class="rounded-full shrink-0 bg-background/50 backdrop-blur">In Progress</Button>
-			<Button variant="outline" size="sm" class="rounded-full shrink-0 bg-background/50 backdrop-blur">In Review</Button>
-			<Button variant="outline" size="sm" class="rounded-full shrink-0 bg-background/50 backdrop-blur">Due soon</Button>
+			{#each taskFilters as filter (filter.id)}
+				<Button
+					variant={activeFilter === filter.id ? 'default' : 'outline'}
+					size="sm"
+					class="rounded-full shrink-0 bg-background/50 backdrop-blur"
+					onclick={() => (activeFilter = filter.id)}
+				>
+					{filter.label}
+				</Button>
+			{/each}
 		</div>
 	</div>
 
@@ -29,64 +41,35 @@
 						<th class="px-6 py-4 font-semibold">Status</th>
 						<th class="px-6 py-4 font-semibold">Deadline</th>
 						<th class="px-6 py-4 font-semibold">Dependencies</th>
+						<th class="px-6 py-4 font-semibold text-right">Action</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-border/50 bg-card">
-					<!-- In Progress -->
-					<tr class="hover:bg-muted/30 transition-colors cursor-pointer group">
-						<td class="px-6 py-4 font-medium text-foreground">
-							<div class="flex items-center gap-3">
-								<div class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
-								Finalize event poster
-							</div>
-						</td>
-						<td class="px-6 py-4 text-muted-foreground group-hover:text-foreground transition-colors">Design Circle</td>
-						<td class="px-6 py-4"><Badge variant="secondary" class="bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">In Progress</Badge></td>
-						<td class="px-6 py-4 text-foreground font-medium">May 21</td>
-						<td class="px-6 py-4 text-muted-foreground">Venue confirmed</td>
-					</tr>
-					
-					<!-- In Review -->
-					<tr class="hover:bg-muted/30 transition-colors cursor-pointer group">
-						<td class="px-6 py-4 font-medium text-foreground">
-							<div class="flex items-center gap-3">
-								<div class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></div>
-								Review volunteer map
-							</div>
-						</td>
-						<td class="px-6 py-4 text-muted-foreground group-hover:text-foreground transition-colors">Campus Volunteers</td>
-						<td class="px-6 py-4"><Badge variant="secondary" class="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-300">In Review</Badge></td>
-						<td class="px-6 py-4">May 23</td>
-						<td class="px-6 py-4 text-muted-foreground">None</td>
-					</tr>
-
-					<!-- To Be Assigned -->
-					<tr class="hover:bg-muted/30 transition-colors cursor-pointer group">
-						<td class="px-6 py-4 font-medium text-foreground">
-							<div class="flex items-center gap-3">
-								<div class="w-2 h-2 rounded-full border-2 border-muted-foreground shrink-0"></div>
-								Prepare mentor notes
-							</div>
-						</td>
-						<td class="px-6 py-4 text-muted-foreground group-hover:text-foreground transition-colors">Code Bloom</td>
-						<td class="px-6 py-4"><Badge variant="outline" class="text-muted-foreground border-muted">To Be Assigned</Badge></td>
-						<td class="px-6 py-4">May 27</td>
-						<td class="px-6 py-4 text-muted-foreground">Mentor list</td>
-					</tr>
-
-					<!-- Done -->
-					<tr class="hover:bg-muted/30 transition-colors cursor-pointer group">
-						<td class="px-6 py-4 font-medium text-muted-foreground line-through">
-							<div class="flex items-center gap-3">
-								<div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
-								Publish event recap
-							</div>
-						</td>
-						<td class="px-6 py-4 text-muted-foreground">Design Circle</td>
-						<td class="px-6 py-4"><Badge variant="secondary" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300">Done</Badge></td>
-						<td class="px-6 py-4 text-muted-foreground">May 18</td>
-						<td class="px-6 py-4 text-muted-foreground">Photos uploaded</td>
-					</tr>
+					{#each filteredTasks as task (task.id)}
+						<tr class="hover:bg-muted/30 transition-colors group">
+							<td class={cn('px-6 py-4 font-medium', task.isComplete && 'text-muted-foreground line-through')}>
+								<div class="flex items-center gap-3">
+									<div class={cn('w-2 h-2 rounded-full shrink-0', task.dotClass)}></div>
+									{task.title}
+								</div>
+							</td>
+							<td class="px-6 py-4 text-muted-foreground group-hover:text-foreground transition-colors">
+								{task.communityName}
+							</td>
+							<td class="px-6 py-4">
+								<Badge variant={task.badgeVariant} class={cn('hover:bg-inherit', task.badgeClass)}>
+									{task.status}
+								</Badge>
+							</td>
+							<td class={cn('px-6 py-4', task.isComplete && 'text-muted-foreground')}>
+								{task.dueDate}
+							</td>
+							<td class="px-6 py-4 text-muted-foreground">{task.dependencies}</td>
+							<td class="px-6 py-4 text-right">
+								<Button variant="outline" size="sm" href={`/tasks/${task.id}`}>Open</Button>
+							</td>
+						</tr>
+					{/each}
 				</tbody>
 			</table>
 		</div>

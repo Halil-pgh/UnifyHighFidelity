@@ -36,14 +36,14 @@
 			{ title: "Calendar", url: "/calendar", icon: CalendarEventIcon },
 		],
 		navSecondary: [
-			{ title: "Settings", url: "#", icon: SettingsIcon },
-			{ title: "Get Help", url: "#", icon: HelpIcon },
-			{ title: "Search", url: "#", icon: SearchIcon },
+			{ title: "Settings", url: "/settings", icon: SettingsIcon },
+			{ title: "Get Help", url: "/help", icon: HelpIcon },
+			{ title: "Search", url: "/search", icon: SearchIcon },
 		],
 		communities: [
-			{ name: "Svelte Developers", url: "#", icon: StarIcon },
-			{ name: "UI/UX Design", url: "#", icon: HashIcon },
-			{ name: "Frontend Masters", url: "#", icon: ShieldIcon },
+			{ name: "Design Circle", url: "/communities/design-circle", icon: StarIcon },
+			{ name: "Campus Volunteers", url: "/communities/campus-volunteers", icon: HashIcon },
+			{ name: "Indie Film Club", url: "/communities/indie-film-club", icon: ShieldIcon },
 		],
 	};
 
